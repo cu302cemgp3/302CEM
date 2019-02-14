@@ -1,0 +1,7 @@
+﻿item_no,qty,price_per_item,retailer_id,expected_shipment_date,manufacturer_id
+char(10),int,"double (9,2)",char(10),datetime,char(10)
+A001,10,5.5,R001,2019-01-25  16:30:00,M001
+A002,5,6,R001,2019-01-25  12:30:00,M001
+A003,8,5,R002,2019-01-25  16:30:00,M002
+A004,7,10,R002,2019-01-25  17:30:00,M002
+A005,6,5,R003,2019-01-25  16:30:00,M003

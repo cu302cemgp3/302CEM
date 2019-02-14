@@ -1,0 +1,6 @@
+order_no,client_id,customer_address,contact_no,contact_person,expected_shipment_date,ship_date,item_no,qty,weight,price_per_item
+char(10),char(10),varchar(200),char(10),varchar(50),datetime(),datetime(),char(10),int,"double(7,5)","double (9,2)"
+PK,FK,,,,,,FK,,,
+The order number,The individual id of client,The address of the cilent,The contact number of customer,The name of the contact person,The expected shippment date,The actual shippment date,The item number,The number of item quantity,The weight of the item,The price of item
+O0001,M0001,XX House,12345678,David Chan,30/1/2019 21:39,30/1/2019 23:59,I0001,1,69.99999,5.5
+O0002,R0002,YY Building,11111111,Mandy Man,31/1/2019 22:49,1/2/2019 23:59,I0002,2,88.00006,6
