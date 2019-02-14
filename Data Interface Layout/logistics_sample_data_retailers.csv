@@ -1,0 +1,14 @@
+order_no,retailer_id,logistics_id,ship_to_adress,contact_no,contact_person,expected_shipment_date,item_no,qty
+char(10),char(10),char(10),varchar(200),char(10),varchar(50),datetime(),char(10),int
+PK,FK,FK,,,,,FK,
+The order number,The individual id of client,The individual id of client,The address of the cilent,The contact number of customer,The name of the contact person,The expected shipment date,The item number,The number of item quantity
+O0001,R0001,L0001,XX House,12345678,David Chan,1/2/2019 23:59,I0001,1
+O0002,R0002,L0002,XX House,12345678,David Chan,2/2/2019 23:59,I0002,2
+O0003,R0001,L0001,XY House,12345679,David Cha,3/2/2019 23:59,I0003,2
+O0004,R0002,L0002,XY House,12345679,David Cha,4/2/2019 23:59,I0004,4
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
