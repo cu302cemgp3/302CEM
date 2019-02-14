@@ -1,0 +1,11 @@
+Table 1
+item_no,order_no,ship_to_address,qty,expected_shipment_date,logistic_id,retailer_id
+char(10),char(10),varchar(200),int,datetime,char(10),char(10)
+A001,I001,Hong Kong,10,2019-01-25  12:30:00,L002,R001
+A002,I001,Hong Kong,10,2019-01-25  16:30:00,L002,R001
+A003,I002,Hong Kong A,20,2019-01-25  12:30:00,L001,R001
+A004,I002,Hong Kong,30,2019-01-25  16:30:00,L001,R001
+A005,I002,Hong Kong A,40,2019-01-25  16:30:00,L001,R001
+,,,,,,
+,,,,,,
+,,,,,,
