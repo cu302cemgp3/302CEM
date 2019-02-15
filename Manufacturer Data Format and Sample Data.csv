@@ -1,5 +1,5 @@
 manufacturer -> logistics,,,,,retailer -> manufacturers,,,,,
-order_no,retailer_id,logistics_id,ship_date,Weight,item_id,quantitiy,item_price,retailer_id,expected_date,manu_id
+order_no,retailer_id,logistics_id,ship_date,Weight,item_no,quantitiy,price_per_item,retailer_id,expected_date,manu_id
 char(10),char(10),char(10),datetime(),"double(7,5)",char(10),int(10),"double(7,2)",char(10),datetime(),char(10)
 O0001,R0014,L0012,11/2/2019,65.95983,I0001,10,62.15,R0007,20/2/2019,M0007
 O0002,R0006,L0009,14/2/2019,82.01806,I0002,328,194.47,R0003,24/2/2019,M0007
