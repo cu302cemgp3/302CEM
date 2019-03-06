@@ -1,0 +1,29 @@
+[
+    {
+        "exp_key": "1",
+        "item_no": "I001",
+        "ship_to_address": "Hong Kong Ocean Park",
+        "qty": "1",
+        "expected_shipment_date": "2019-02-20 10:00:00",
+        "logistic_id": "L001",
+        "retailer_id": "R001"
+    },
+    {
+        "exp_key": "2",
+        "item_no": "I003",
+        "ship_to_address": "Tai O",
+        "qty": "20",
+        "expected_shipment_date": "2019-02-22 13:00:00",
+        "logistic_id": "L001",
+        "retailer_id": "R001"
+    },
+    {
+        "exp_key": "3",
+        "item_no": "I002",
+        "ship_to_address": "Tai O",
+        "qty": "10",
+        "expected_shipment_date": "2019-02-22 13:00:00",
+        "logistic_id": "L001",
+        "retailer_id": "R001"
+    }
+]
