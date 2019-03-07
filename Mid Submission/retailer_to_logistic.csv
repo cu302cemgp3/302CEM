@@ -1,0 +1,4 @@
+"exp_key","item_no","ship_to_address","qty","expected_shipment_date","logistic_id","retailer_id"
+"1","I001","Hong Kong Ocean Park","1","2019-02-20 10:00:00","L001","R001"
+"2","I003","Tai O abc Road","20","2019-02-22 13:00:00","L001","R001"
+"3","I002","Tai O abc street","10","2019-02-22 13:00:00","L001","R001"
