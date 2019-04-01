@@ -1,0 +1,3 @@
+exp_key,item_no,expected_shipment_date,qty,price_per_item,manufacturer_id,retailer_id
+1,A001,2019-02-20 12:30:00,10,6,M001,R001
+2,A002,2019-02-20 16:25:00,5,6,M001,R001

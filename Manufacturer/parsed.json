@@ -1,0 +1,36 @@
+[{
+    "item_no": "A001",
+    "qty": "10",
+    "price_per_item": "10",
+    "retailer_id": "R005",
+    "expected_shipment_date": "2019-01-25  13:30:00",
+    "manufacturer_id": "M003"
+}, {
+    "item_no": "A002",
+    "qty": "20",
+    "price_per_item": "11",
+    "retailer_id": "R004",
+    "expected_shipment_date": "2019-01-25  15:30:00",
+    "manufacturer_id": "M001"
+}, {
+    "item_no": "A003",
+    "qty": "30",
+    "price_per_item": "12",
+    "retailer_id": "R003",
+    "expected_shipment_date": "2019-01-25  16:30:00",
+    "manufacturer_id": "M001"
+}, {
+    "item_no": "A004",
+    "qty": "40",
+    "price_per_item": "13",
+    "retailer_id": "R002",
+    "expected_shipment_date": "2019-01-25  18:30:00",
+    "manufacturer_id": "M004"
+}, {
+    "item_no": "A005",
+    "qty": "50",
+    "price_per_item": "14",
+    "retailer_id": "R001",
+    "expected_shipment_date": "2019-01-25  11:30:00",
+    "manufacturer_id": "M002"
+}]
