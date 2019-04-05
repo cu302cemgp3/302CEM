@@ -39,7 +39,7 @@ def arrange():
         for i in file_data:
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
-            # print(i)
+
                 exp_key = i['exp_key']
                 item_no = i['item_no']
                 qty = i['qty']
@@ -52,8 +52,13 @@ def arrange():
                 var = (exp_key, item_no, date, qty, price, mid, rid)
 
                 cursor.execute(sql, var)
-
                 db.commit()
+
+                debug_cursor = db.cursor()
+                debug_cursor.execute("select exp_key from man where qty <= 0")
+                debug = debug_cursor.fetchall()
+                for d in debug:
+                    debug_cursor.execute("DELETE FROM man WHERE exp_key = %s", d)
 
     order_cursor = db.cursor()
     order_cursor.execute("select * from man where handle = 0")
@@ -72,55 +77,58 @@ def arrange():
             cursor_minus = db.cursor()
             cursor_minus.execute("select man.exp_key, man.item_no, inv.amount from inv join man on inv.product_id = man.item_no where exp_key = %s", order)
             inventory = cursor_minus.fetchone()
-            reduction = int(inventory[2]) - int(amount)
+            if int(amount) > int(inventory[2]):
+                print("Cannot not supply, not enough stock")
+                main()
+            else:
+                reduction = int(inventory[2]) - int(amount)
 
-            cursor_update1 = db.cursor()
-            cursor_update1.execute("UPDATE inv SET amount = %s WHERE product_id = %s", (reduction, inventory[1]))
-            db.commit()
+                print("Which time slot? ")
+                cursor4 = db.cursor()
+                cursor4.execute("select * from time where available = 1")
+                query = cursor4.fetchall()
+                for q in query:
+                    print(q[0], q[1].strftime("%m/%d/%Y, %H:%M:%S"), q[2])
+                time = input("Time slot ID: ")
 
-            cursor_update2 = db.cursor()
-            cursor_update2.execute("update man set handle = 1 where exp_key = %s", inventory[0])
-            db.commit()
-
-            print("Which time slot? ")
-            cursor4 = db.cursor()
-            cursor4.execute("select * from time where available = 1")
-            query = cursor4.fetchall()
-            for q in query:
-                print(q[0], q[1].strftime("%m/%d/%Y, %H:%M:%S"), q[2])
-            time = input("Time slot ID: ")
-
-            updatetime = db.cursor()
-            updatetime.execute("UPDATE time SET available = 0 WHERE time_id = %s", time)
-            db.commit()
-
-            selecttime = db.cursor()
-            selecttime.execute("select timeslot from time where time_id = %s", time)
-            query2 = selecttime.fetchone()
-
-            print("You are going to deliver " + amount + " piece of " + order + " on " + str(query2[0]))
-            ex = input("Add to delivery queue? y/N? ")
-            cursor3 = db.cursor()
-            cursor3.execute(
-                "SELECT man.item_no, man.retailer_id, man.exp_key, time.timeslot FROM man JOIN time ON man.exp_key = %s WHERE time.time_id = %s", (order, time))
-            query3 = cursor3.fetchone()
-            if ex == 'y':
-                cursor_indeliv = db.cursor()
-                newtime = query3[3].strftime("%Y-%m-%d %H:%M:%S")
-                sql = "insert into delivery (item_id, retailer_id, order_id, timeslot) VALUES (%s,%s,%s,%s)"
-                var = (query3[0], query3[1], query3[2], newtime)
-                cursor_indeliv.execute(sql, var)
+                selecttime = db.cursor()
+                selecttime.execute("select timeslot from time where time_id = %s", time)
+                query2 = selecttime.fetchone()
+                # update the inventory level----------------------------------------------------------------
+                cursor_update1 = db.cursor()
+                cursor_update1.execute("UPDATE inv SET amount = %s WHERE product_id = %s", (reduction, inventory[1]))
                 db.commit()
-                # print(sql)
-
-                date = str(datetime.datetime.now().date())
-                filename = date+"output.csv"
-                with open(filename, 'a', newline='') as csvfile:
-                    writer = csv.writer(csvfile)
-                    writer.writerow([query3[0], query3[1], query3[2], query3[3].strftime("%m/%d/%Y, %H:%M:%S")])
+                # update the order----------------------------------------------------------------
+                cursor_update2 = db.cursor()
+                cursor_update2.execute("update man set handle = 1 where exp_key = %s", inventory[0])
+                db.commit()
+                # update the selected time slot----------------------------------------------------------------
+                updatetime = db.cursor()
+                updatetime.execute("UPDATE time SET available = 0 WHERE time_id = %s", time)
+                db.commit()
+                # export to csv file----------------------------------------------------------------
+                print("You are going to deliver " + amount + " piece of " + order + " on " + str(query2[0]))
+                ex = input("Add to delivery queue? y/N? ")
+                cursor3 = db.cursor()
+                cursor3.execute(
+                    "SELECT man.item_no, man.retailer_id, man.exp_key, time.timeslot FROM man JOIN time ON man.exp_key = %s WHERE time.time_id = %s", (order, time))
+                query3 = cursor3.fetchone()
+                if ex == 'y':
+                    cursor_indeliv = db.cursor()
+                    newtime = query3[3].strftime("%Y-%m-%d %H:%M:%S")
+                    sql = "insert into delivery (item_id, retailer_id, order_id, timeslot) VALUES (%s,%s,%s,%s)"
+                    var = (query3[0], query3[1], query3[2], newtime)
+                    cursor_indeliv.execute(sql, var)
+                    db.commit()
+                    # generate the csv file with date----------------------------------------------------------------
+                    date = str(datetime.datetime.now().date())
+                    filename = date+"output.csv"
+                    with open(filename, 'a', newline='') as csvfile:
+                        writer = csv.writer(csvfile)
+                        writer.writerow([query3[0], query3[1], query3[2], query3[3].strftime("%m/%d/%Y, %H:%M:%S")])
 
         else:
-            print("no such item")
+            print("Your inventory do not have this item.")
 
 def vieworder():
     print("-----------------------------------\n"
@@ -148,8 +156,13 @@ def vieworder():
                 var = (exp_key, item_no, date, qty, price, mid, rid)
 
                 cursor.execute(sql, var)
-
                 db.commit()
+
+                debug_cursor = db.cursor()
+                debug_cursor.execute("select exp_key from man where qty <= 0")
+                debug = debug_cursor.fetchall()
+                for d in debug:
+                    debug_cursor.execute("DELETE FROM man WHERE exp_key = %s", d)
 
         cursor.execute("select * from man where handle = 0")
         query = cursor.fetchall()
