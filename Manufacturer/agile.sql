@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機: 127.0.0.1
--- 產生時間： 2019 年 04 月 04 日 13:07
+-- 產生時間： 2019 年 04 月 05 日 06:49
 -- 伺服器版本: 10.1.34-MariaDB
 -- PHP 版本： 7.2.8
 
@@ -41,8 +41,7 @@ CREATE TABLE `delivery` (
 --
 
 INSERT INTO `delivery` (`delivery_id`, `item_id`, `retailer_id`, `order_id`, `timeslot`) VALUES
-(11, 'I001', 'R001', '1', '2019-04-04 11:00:00'),
-(12, 'I001', 'R001', '1', '2019-04-03 09:00:00');
+(1, 'I001', 'R001', '1', '2019-04-03 09:00:00');
 
 -- --------------------------------------------------------
 
@@ -61,7 +60,7 @@ CREATE TABLE `inv` (
 --
 
 INSERT INTO `inv` (`product_id`, `product_description`, `amount`) VALUES
-('I001', 'Juice', 98700),
+('I001', 'Juice', 98600),
 ('I002', 'Cable G48', 99550),
 ('I003', 'Charger M320', 23469),
 ('I004', 'Pen', 42200),
@@ -80,7 +79,7 @@ CREATE TABLE `man` (
   `qty` int(11) DEFAULT NULL,
   `price_per_item` int(11) DEFAULT NULL,
   `manufacturer_id` text,
-  `retailer_id` text,
+  `retailer_id` varchar(11) DEFAULT NULL,
   `handle` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -92,8 +91,6 @@ INSERT INTO `man` (`exp_key`, `item_no`, `expected_shipment_date`, `qty`, `price
 ('1', 'I001', '2019-02-20 12:30:00', 100, 20, 'M001', 'R001', 1),
 ('2', 'I002', '2019-02-20 16:25:00', 50, 61, 'M001', 'R001', 0),
 ('3', 'I003', '2019-04-03 15:10:00', 10, 40, 'M001', 'R001', 0),
-('6', 'I002', '2019-03-20 16:25:00', -3, -20, 'M001', 'R001', 0),
-('7', 'I001', '2019-04-03 10:00:00', 10, 1, 'M001', 'R002', 0),
 ('8', 'I003', '2019-04-03 08:00:00', 10, 1, 'M001', 'R001', 0);
 
 -- --------------------------------------------------------
@@ -140,9 +137,19 @@ INSERT INTO `time` (`time_id`, `timeslot`, `available`) VALUES
 (7, '2019-04-04 14:00:00', 1),
 (8, '2019-04-04 16:00:00', 1),
 (9, '2019-04-05 09:00:00', 1),
-(10, '2019-04-03 11:00:00', 1),
+(10, '2019-04-05 11:00:00', 1),
 (11, '2019-04-05 14:00:00', 1),
-(12, '2019-04-03 16:00:00', 1);
+(12, '2019-04-05 16:00:00', 1),
+(13, '2019-04-06 09:00:00', 1),
+(14, '2019-04-06 11:00:00', 1),
+(15, '2019-04-06 14:00:00', 1),
+(16, '2019-04-06 16:00:00', 1),
+(17, '2019-04-07 09:00:00', 1),
+(18, '2019-04-07 11:00:00', 1),
+(19, '2019-04-08 09:00:00', 1),
+(20, '2019-04-08 11:00:00', 1),
+(21, '2019-04-08 14:00:00', 1),
+(22, '2019-04-08 16:00:00', 1);
 
 --
 -- 已匯出資料表的索引
@@ -168,7 +175,8 @@ ALTER TABLE `inv`
 --
 ALTER TABLE `man`
   ADD PRIMARY KEY (`exp_key`),
-  ADD KEY `item_no` (`item_no`);
+  ADD KEY `item_no` (`item_no`),
+  ADD KEY `retailer_id` (`retailer_id`);
 
 --
 -- 資料表索引 `retailer`
@@ -190,13 +198,13 @@ ALTER TABLE `time`
 -- 使用資料表 AUTO_INCREMENT `delivery`
 --
 ALTER TABLE `delivery`
-  MODIFY `delivery_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `delivery_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- 使用資料表 AUTO_INCREMENT `time`
 --
 ALTER TABLE `time`
-  MODIFY `time_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `time_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- 已匯出資料表的限制(Constraint)
@@ -214,7 +222,8 @@ ALTER TABLE `delivery`
 -- 資料表的 Constraints `man`
 --
 ALTER TABLE `man`
-  ADD CONSTRAINT `man_ibfk_1` FOREIGN KEY (`item_no`) REFERENCES `inv` (`product_id`);
+  ADD CONSTRAINT `man_ibfk_1` FOREIGN KEY (`item_no`) REFERENCES `inv` (`product_id`),
+  ADD CONSTRAINT `man_ibfk_2` FOREIGN KEY (`retailer_id`) REFERENCES `retailer` (`retailer_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
