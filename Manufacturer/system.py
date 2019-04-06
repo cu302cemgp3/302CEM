@@ -59,12 +59,14 @@ def arrange():
                 debug = debug_cursor.fetchall()
                 for d in debug:
                     debug_cursor.execute("DELETE FROM man WHERE exp_key = %s", d)
-
+    print("-----------------------------------")
     order_cursor = db.cursor()
     order_cursor.execute("select * from man where handle = 0")
     qorder = order_cursor.fetchall()
+
     for q in qorder:
-        print(q)
+        print(q[0], q[1], q[2].strftime("%Y-%m-%d %H:%M:%S"), int(q[3]), int(q[4]), q[6])
+    print("-----------------------------------")
 
     if qorder == None:
         print("There are no any order left.")
@@ -87,8 +89,10 @@ def arrange():
                 cursor4 = db.cursor()
                 cursor4.execute("select * from time where available = 1")
                 query = cursor4.fetchall()
+                print("-----------------------------------")
                 for q in query:
                     print(q[0], q[1].strftime("%m/%d/%Y, %H:%M:%S"), q[2])
+                print("-----------------------------------")
                 time = input("Time slot ID: ")
 
                 selecttime = db.cursor()
@@ -125,7 +129,8 @@ def arrange():
                     filename = date+"output.csv"
                     with open(filename, 'a', newline='') as csvfile:
                         writer = csv.writer(csvfile)
-                        writer.writerow([query3[0], query3[1], query3[2], query3[3].strftime("%m/%d/%Y, %H:%M:%S")])
+                        writer.writerow([query3[0], query3[1], query3[2], query3[3].strftime("%Y-%m-%d %H:%M:%S")])
+                    print("Done. Added to the csv file.")
 
         else:
             print("Your inventory do not have this item.")
