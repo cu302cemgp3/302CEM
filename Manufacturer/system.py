@@ -65,7 +65,7 @@ def arrange():
     qorder = order_cursor.fetchall()
 
     for q in qorder:
-        print(q[0], q[1], q[2].strftime("%Y-%m-%d %H:%M:%S"), int(q[3]), int(q[4]), q[6])
+        print(q[0], q[1], int(q[2]), q[3], q[5].strftime("%Y-%m-%d %H:%M:%S"))
     print("-----------------------------------")
 
     if qorder == None:
@@ -91,7 +91,7 @@ def arrange():
                 query = cursor4.fetchall()
                 print("-----------------------------------")
                 for q in query:
-                    print(q[0], q[1].strftime("%m/%d/%Y, %H:%M:%S"), q[2])
+                    print(q[0], q[1].strftime("%Y-%m-%d %H:%M:%S"), q[2])
                 print("-----------------------------------")
                 time = input("Time slot ID: ")
 
@@ -131,9 +131,11 @@ def arrange():
                         writer = csv.writer(csvfile)
                         writer.writerow([query3[0], query3[1], query3[2], query3[3].strftime("%Y-%m-%d %H:%M:%S")])
                     print("Done. Added to the csv file.")
+                    main()
 
         else:
             print("Your inventory do not have this item.")
+            main()
 
 def vieworder():
     print("-----------------------------------\n"
@@ -172,7 +174,7 @@ def vieworder():
         cursor.execute("select * from man where handle = 0")
         query = cursor.fetchall()
         for q in query:
-            print(q)
+            print(q[0], q[1], int(q[2]), q[3], q[5].strftime("%Y-%m-%d %H:%M:%S"))
 
     main()
 

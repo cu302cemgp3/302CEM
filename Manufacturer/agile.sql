@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.8.2
 -- https://www.phpmyadmin.net/
 --
 -- 主機: 127.0.0.1
--- 產生時間： 2019 年 04 月 06 日 04:32
--- 伺服器版本: 10.1.28-MariaDB
--- PHP 版本： 7.1.11
+-- 產生時間： 2019 年 04 月 06 日 08:35
+-- 伺服器版本: 10.1.34-MariaDB
+-- PHP 版本： 7.2.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -21,6 +21,86 @@ SET time_zone = "+00:00";
 --
 -- 資料庫： `agile`
 --
+
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `delivery`
+--
+
+CREATE TABLE `delivery` (
+  `delivery_id` int(11) NOT NULL,
+  `item_id` varchar(11) NOT NULL,
+  `retailer_id` varchar(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `timeslot` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `inv`
+--
+
+CREATE TABLE `inv` (
+  `product_id` varchar(11) NOT NULL,
+  `describtion` varchar(128) NOT NULL,
+  `amount` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- 資料表的匯出資料 `inv`
+--
+
+INSERT INTO `inv` (`product_id`, `describtion`, `amount`) VALUES
+('I001', 'Mouse', 99900),
+('I003', 'USB Cable', 49990),
+('I004', 'Pen', 12000);
+
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `man`
+--
+
+CREATE TABLE `man` (
+  `exp_key` int(11) NOT NULL,
+  `item_no` varchar(11) NOT NULL,
+  `qty` int(11) NOT NULL,
+  `price_per_item` int(11) NOT NULL,
+  `retailer_id` varchar(11) NOT NULL,
+  `expected_shipment_date` datetime NOT NULL,
+  `manufacturer_id` varchar(11) NOT NULL,
+  `handle` int(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- 資料表的匯出資料 `man`
+--
+
+INSERT INTO `man` (`exp_key`, `item_no`, `qty`, `price_per_item`, `retailer_id`, `expected_shipment_date`, `manufacturer_id`, `handle`) VALUES
+(1, 'I001', 100, 20, 'R001', '2019-02-20 12:30:00', 'M001', 0),
+(3, 'I003', 10, 40, 'R001', '2019-04-03 15:10:00', 'M001', 0),
+(8, 'I003', 10, 1, 'R001', '2019-04-03 08:00:00', 'M001', 0);
+
+-- --------------------------------------------------------
+
+--
+-- 資料表結構 `retailer`
+--
+
+CREATE TABLE `retailer` (
+  `retailer_id` varchar(11) NOT NULL,
+  `location` varchar(128) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- 資料表的匯出資料 `retailer`
+--
+
+INSERT INTO `retailer` (`retailer_id`, `location`) VALUES
+('R001', 'Hong Kong'),
+('R003', 'ShaTin');
 
 -- --------------------------------------------------------
 
@@ -66,6 +146,35 @@ INSERT INTO `time` (`time_id`, `timeslot`, `available`) VALUES
 --
 
 --
+-- 資料表索引 `delivery`
+--
+ALTER TABLE `delivery`
+  ADD PRIMARY KEY (`delivery_id`),
+  ADD KEY `item_id` (`item_id`),
+  ADD KEY `order_id` (`order_id`),
+  ADD KEY `retailer_id` (`retailer_id`);
+
+--
+-- 資料表索引 `inv`
+--
+ALTER TABLE `inv`
+  ADD PRIMARY KEY (`product_id`);
+
+--
+-- 資料表索引 `man`
+--
+ALTER TABLE `man`
+  ADD PRIMARY KEY (`exp_key`),
+  ADD KEY `item_no` (`item_no`),
+  ADD KEY `retailer_id` (`retailer_id`);
+
+--
+-- 資料表索引 `retailer`
+--
+ALTER TABLE `retailer`
+  ADD PRIMARY KEY (`retailer_id`);
+
+--
 -- 資料表索引 `time`
 --
 ALTER TABLE `time`
@@ -76,10 +185,35 @@ ALTER TABLE `time`
 --
 
 --
+-- 使用資料表 AUTO_INCREMENT `delivery`
+--
+ALTER TABLE `delivery`
+  MODIFY `delivery_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- 使用資料表 AUTO_INCREMENT `time`
 --
 ALTER TABLE `time`
   MODIFY `time_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- 已匯出資料表的限制(Constraint)
+--
+
+--
+-- 資料表的 Constraints `delivery`
+--
+ALTER TABLE `delivery`
+  ADD CONSTRAINT `delivery_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `inv` (`product_id`),
+  ADD CONSTRAINT `delivery_ibfk_2` FOREIGN KEY (`order_id`) REFERENCES `man` (`exp_key`),
+  ADD CONSTRAINT `delivery_ibfk_3` FOREIGN KEY (`retailer_id`) REFERENCES `retailer` (`retailer_id`);
+
+--
+-- 資料表的 Constraints `man`
+--
+ALTER TABLE `man`
+  ADD CONSTRAINT `man_ibfk_1` FOREIGN KEY (`item_no`) REFERENCES `inv` (`product_id`),
+  ADD CONSTRAINT `man_ibfk_2` FOREIGN KEY (`retailer_id`) REFERENCES `retailer` (`retailer_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
